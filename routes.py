@@ -16,10 +16,10 @@ def index():
 def add():
     form = forms.AddTaskForm()
     if form.validate_on_submit():
-        if form.date.data:
-            task = models.Task(title=form.title.data, date=form.date.data)
+        if form.date.data: # Agregué un if, por si no se ingresa una fecha se seleccione automáticamente la fecha actual
+            task = models.Task(title=form.title.data, date=form.date.data) #Fecha proporcionada por el usuario
         else:
-            task = models.Task(title=form.title.data, date=datetime.utcnow())
+            task = models.Task(title=form.title.data, date=datetime.utcnow()) #Fecha actual
         db.session.add(task)
         db.session.commit()
         flash('Task added')
@@ -39,8 +39,6 @@ def edit(task_id):
                 task.date = form.date.data
             else:
                 task.date = datetime.utcnow()
-            #task.date = form.date.data
-            #task.date = datetime
             db.session.commit()
             flash('Task updated')
             return redirect(url_for('index'))
