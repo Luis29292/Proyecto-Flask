@@ -16,7 +16,7 @@ def index():
 def add():
     form = forms.AddTaskForm()
     if form.validate_on_submit():
-        task = models.Task(title=form.title.data, date=datetime.utcnow())
+        task = models.Task(title=form.title.data, date=form.date.data)
         db.session.add(task)
         db.session.commit()
         flash('Task added')
@@ -32,7 +32,7 @@ def edit(task_id):
     if task:
         if form.validate_on_submit():
             task.title = form.title.data
-            task.date = datetime.utcnow()
+            task.date = form.date.data
             db.session.commit()
             flash('Task updated')
             return redirect(url_for('index'))
